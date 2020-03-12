@@ -1,6 +1,8 @@
 package main
 
 import (
+	"ged/model"
+	"ged/storage"
 	"github.com/gorilla/mux"
 	"io"
 	"log"
@@ -8,7 +10,14 @@ import (
 	"os"
 )
 
+var userStore storage.UserStore
+
 func main() {
+
+	userStore := storage.NewUserMemoryStore()
+
+	userStore.Save(model.User{})
+
 	r := mux.NewRouter()
 
 	r.HandleFunc("/", test)
@@ -35,8 +44,15 @@ func upload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	defer r.Body.Close()
-	f, err := os.OpenFile("a.png", os.O_CREATE | os.O_RDWR, 0755)
+	defer func() {
+		err := r.Body.Close()
+
+		if err != nil {
+			log.Println(err.Error())
+		}
+	}()
+
+	f, err := os.OpenFile("a.png", os.O_CREATE|os.O_RDWR, 0755)
 
 	if err != nil {
 		log.Println(err.Error())
@@ -50,7 +66,7 @@ func upload(w http.ResponseWriter, r *http.Request) {
 	}
 
 	file, _, err := r.FormFile("file")
-	if  err != nil {
+	if err != nil {
 		log.Println(err)
 		return
 	}

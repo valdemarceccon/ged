@@ -1,7 +1,6 @@
 package main
 
 import (
-	"ged/model"
 	"ged/storage"
 	"github.com/gorilla/mux"
 	"io"
@@ -14,9 +13,7 @@ var userStore storage.UserStore
 
 func main() {
 
-	userStore := storage.NewUserMemoryStore()
-
-	userStore.Save(model.User{})
+	_ = storage.NewUserMemoryStore()
 
 	r := mux.NewRouter()
 

@@ -7,15 +7,15 @@ type UserMemoryStore struct {
 }
 
 func NewUserMemoryStore() *UserMemoryStore {
-	users := make(map[uint]model.User, 10)
+	users := make(map[uint]model.User, 0)
 	return &UserMemoryStore{users: users}
 }
 
 func (u *UserMemoryStore) Save(user model.User) {
 	if user.ID() == 0 {
-		updateUser(u, user)
-	} else {
 		create(u, user)
+	} else {
+		updateUser(u, user)
 	}
 }
 
@@ -47,4 +47,14 @@ func (u *UserMemoryStore) Find(wantedId uint) model.User {
 
 func (u *UserMemoryStore) Delete(user model.User) {
 	panic("implement me")
+}
+
+func (u *UserMemoryStore) List() []model.User {
+	result := make([]model.User, 0, len(u.users))
+
+	for _, v := range u.users {
+		result = append(result, v)
+	}
+
+	return result
 }

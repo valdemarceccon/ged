@@ -28,9 +28,9 @@ func NovoUsuario(id uint, name string) User {
 }
 
 func (u *SystemUser) ID() uint {
-	return u.ID()
+	return u.id
 }
 
 func (u *SystemUser) Name() string {
-	return u.Name()
+	return u.name
 }

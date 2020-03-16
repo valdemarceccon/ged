@@ -13,7 +13,7 @@ var userStore storage.UserStore
 
 func main() {
 
-	_ = storage.NewUserMemoryStore()
+	userStore = storage.NewUserMemoryStore()
 
 	r := mux.NewRouter()
 
